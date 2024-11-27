@@ -1,0 +1,79 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Создаем тестовый массив
+        int[,] array = {
+            { 3, 8, 7 },
+            { 5, 2, 4 },
+            { 9, 1, 6 }
+        };
+
+        Console.WriteLine("Массив:");
+        PrintArray(array);
+
+        FindSaddlePoints(array);
+    }
+
+    static void FindSaddlePoints(int[,] array)
+    {
+        int rows = array.GetLength(0);
+        int cols = array.GetLength(1);
+
+        Console.WriteLine("\nСедловые точки:");
+
+        bool hasSaddlePoint = false;
+
+        for (int i = 0; i < rows; i++)
+        {
+            // Находим минимальный элемент в строке
+            int minColIndex = 0;
+            for (int j = 1; j < cols; j++)
+            {
+                if (array[i, j] < array[i, minColIndex])
+                {
+                    minColIndex = j;
+                }
+            }
+
+            // Проверяем, является ли этот элемент максимальным в своем столбце
+            bool isSaddlePoint = true;
+            for (int k = 0; k < rows; k++)
+            {
+                if (array[k, minColIndex] > array[i, minColIndex])
+                {
+                    isSaddlePoint = false;
+                    break;
+                }
+            }
+
+            if (isSaddlePoint)
+            {
+                hasSaddlePoint = true;
+                Console.WriteLine($"Седловая точка найдена: значение {array[i, minColIndex]}, строка {i + 1}, столбец {minColIndex + 1}");
+            }
+        }
+
+        if (!hasSaddlePoint)
+        {
+            Console.WriteLine("Седловых точек нет.");
+        }
+    }
+
+    static void PrintArray(int[,] array)
+    {
+        int rows = array.GetLength(0);
+        int cols = array.GetLength(1);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                Console.Write(array[i, j] + "\t");
+            }
+            Console.WriteLine();
+        }
+    }
+}
